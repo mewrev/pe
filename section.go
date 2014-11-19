@@ -4,6 +4,7 @@ import (
 	"encoding/binary"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"strings"
 )
 
@@ -254,4 +255,10 @@ func (file *File) parseSectHeaders() error {
 	}
 
 	return nil
+}
+
+// Section returns the contents of the provided section.
+func (file *File) Section(sectHdr *SectHeader) (data []byte, err error) {
+	sr := io.NewSectionReader(file.r, int64(sectHdr.Offset), int64(sectHdr.Size))
+	return ioutil.ReadAll(sr)
 }
