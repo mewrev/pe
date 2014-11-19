@@ -35,11 +35,11 @@ type Arch uint16
 
 // Machine architectures.
 const (
-	// Intel 386 and later processors.
+	// ArchI386 represents the Intel 386 and later processors.
 	ArchI386 Arch = 0x014C
-	// Intel Itanium processor.
+	// ArchIA64 represents the Intel Itanium processor.
 	ArchIA64 Arch = 0x0200
-	// x64 processor.
+	// ArchAMD64 represents the x64 processor.
 	ArchAMD64 Arch = 0x8664
 )
 
@@ -74,32 +74,36 @@ type Flag uint16
 
 // Executable characteristics.
 const (
-	// The file contains no relocation information.
+	// FlagNoReloc indicates that the file contains no relocation information.
 	FlagNoReloc Flag = 1 << iota
-	// The file is executable.
+	// FlagExecutable indicates that the file is executable.
 	FlagExecutable
-	// The file contains no line numbers.
+	// FlagNoLineNums indicates that the file contains no line numbers.
 	FlagNoLineNums
-	// The file contains no symbol table.
+	// FlagNoSymTbl indicates that the file contains no symbol table.
 	FlagNoSymTbl
 	_ // obsolete.
-	// The application can handle addresses larger than 2 GB.
+	// FlagLargeAddr indicates that the application can handle addresses larger
+	// than 2 GB.
 	FlagLargeAddr
 	_ // obsolete.
-	// The computer supports 32-bit words.
+	// Flag32bit indicates that the computer supports 32-bit words.
 	Flag32bit
-	// The file contains no debugging information. It may be present in a
-	// separate file.
+	// FlagNoDebug indicates that the file contains no debugging information. It
+	// may be present in a separate file.
 	FlagNoDebug
-	// If the file is on a removeable media, copy it to and run it from the swap.
+	// FlagUSBCopyToSwap copies the file from a usb device to the swap before
+	// running it.
 	FlagUSBCopyToSwap
-	// If the file is on the network, copy it to and run it from the swap.
+	// FlagNetCopyToSwap copies the file from the network to the swap before
+	// running it.
 	FlagNetCopyToSwap
-	// The file is a system file.
+	// FlagSystem indicates that the file is a system file.
 	FlagSystem
-	// The file is a dynamic link library (DLL).
+	// FlagDLL indicates that the file is a dynamic link library (DLL).
 	FlagDLL
-	// The file should only be run on a uniprocessor computer.
+	// FlagUniprocessor indicates that the file should only be run on a
+	// uniprocessor computer.
 	FlagUniprocessor
 )
 

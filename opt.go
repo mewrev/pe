@@ -119,11 +119,11 @@ type OptHeader32 struct {
 type OptState uint16
 
 const (
-	// The file is a 32-bit executable image.
+	// OptState32 represents a 32-bit executable image.
 	OptState32 OptState = 0x010B
-	// The file is a 64-bit executable image.
+	// OptState64 represents a 64-bit executable image.
 	OptState64 OptState = 0x020B
-	// The file is a ROM image.
+	// OptStateROM represents a ROM image.
 	OptStateROM OptState = 0x0107
 )
 
@@ -146,35 +146,39 @@ type Subsystem uint16
 
 // Subsystems.
 const (
-	// Unknown subsystem.
+	// SubsystemUnknown represents an unknown subsystem.
 	SubsystemUnknown Subsystem = iota
-	// No subsystem required (device drivers and native system processes).
+	// SubsystemNative represents a device driver or native system process; no
+	// subsystem required.
 	SubsystemNative
-	// Windows graphical user interface (GUI) subsystem.
+	// SubsystemWinGUI represents a Windows graphical user interface (GUI)
+	// subsystem.
 	SubsystemWinGUI
-	// Window command line interface (CLI) subsystem.
+	// SubsystemWinCLI represents a Window command line interface (CLI)
+	// subsystem.
 	SubsystemWinCLI
 	_
-	// OS/2 CLI subsystem.
+	// SubsystemOS2CLI represents a OS/2 CLI subsystem.
 	SubsystemOS2CLI
 	_
-	// POSIX CLI subsystem.
+	// SubsystemPOSIXCLI represents a POSIX CLI subsystem.
 	SubsystemPOSIXCLI
 	_
-	// Windows CE GUI subsystem.
+	// SubsystemWinCEGUI represents a Windows CE GUI subsystem.
 	SubsystemWinCEGUI
-	// Extensible Firmware Interface (EFI) application.
+	// SubsystemEFIApp represents an Extensible Firmware Interface (EFI)
+	// application.
 	SubsystemEFIApp
-	// EFI driver with boot services.
+	// SubsystemEFIBootDriver represents an EFI driver with boot services.
 	SubsystemEFIBootDriver
-	// EFI driver with run-time services.
+	// SubsystemEFIRuntimeDriver represents an EFI driver with run-time services.
 	SubsystemEFIRuntimeDriver
-	// EFI ROM image.
+	// SubsystemEFIROM represents an EFI ROM image.
 	SubsystemEFIROM
-	// Xbox system.
+	// SubsystemXbox represents an Xbox system.
 	SubsystemXbox
 	_
-	// Boot application.
+	// SubsystemWinBootApp represents a boot application.
 	SubsystemWinBootApp
 )
 
@@ -207,22 +211,24 @@ type DLLFlag uint16
 
 // DLL characteristics.
 const (
-	// The DLL can be relocated at load time.
+	// DLLFlagDynBase indicates that the DLL can be relocated at load time.
 	DLLFlagDynBase DLLFlag = 0x0040
-	// Forces code integrity checks.
+	// DLLFlagForceIntegrity forces code integrity checks.
 	DLLFlagForceIntegrity DLLFlag = 0x0080
-	// The image is compatible with data execution prevention (DEP).
+	// DLLFlagCanDEP indicates that the image is compatible with data execution
+	// prevention (DEP).
 	DLLFlagCanDEP DLLFlag = 0x0100
-	// The image shouldn't be isolated.
+	// DLLFlagNoIsolation indicates that the image shouldn't be isolated.
 	DLLFlagNoIsolation DLLFlag = 0x0200
-	// The image doesn't use structured exception handling (SEH). No handlers can
-	// be called in this image.
+	// DLLFlagNoSEH indicates that the image doesn't use structured exception
+	// handling (SEH). No handlers can be called in this image.
 	DLLFlagNoSEH DLLFlag = 0x0400
-	// Don't bind the image.
+	// DLLFlagNoBind specifies that the linker shouldn't bind the image.
 	DLLFlagNoBind DLLFlag = 0x0800
-	// A Windows Driver Model (WDM) driver.
+	// DLLFlagWDMDriver represents a Windows Driver Model (WDM) driver.
 	DLLFlagWDMDriver DLLFlag = 0x2000
-	// The image is remove desktop service (RDS) aware.
+	// DLLFlagCanRDS indicates that the image is remove desktop service (RDS)
+	// aware.
 	DLLFlagCanRDS DLLFlag = 0x8000
 )
 
