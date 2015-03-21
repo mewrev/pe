@@ -1,0 +1,35 @@
+// Use cases:
+//    * Inject DLL, functions and code.
+//    * Make a dynamically linked file static.
+//    * Remove/add sections.
+//    * Dump an assembly version which is md5 identical.
+//
+// Proof of concept:
+//   ...
+//   2) Dump an assembly version which is md5 identical.
+//   3) Inject a function.
+//   4) Inject a DLL.
+//   5) Edit code.
+//   6) "hello world" dynamic to static on the same host OS.
+//   7) "hello world" on other OS than host.
+
+package pe
+
+type File struct {
+	r io.ReaderAt
+}
+
+func Open(path string) (file *File, err error)
+func (file *File) DOSHeader() (doshdr *DOSHeader, err error)
+func (file *File) PEHeader() (pehdr *PEHeader, err error)
+func (file *File) OptionalHeader() (opthdr *OptionalHeader, err error)
+func (file *File) DataDirectories() (dataDirs []DataDirectory, err error)
+func (file *File) SectionHeaders() (sects []*SectionHeader, err error)
+func (file *File) SectionHeader(name string) (sects *SectionHeader, err error)
+
+func (sect *SectionHeader) Data() ([]byte, error)
+
+package pex
+
+func Create(file *pe.File, path string) (pex *PEX, err error)
+func (sect *Section) SetData(buf []byte)

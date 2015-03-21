@@ -1,0 +1,3 @@
+* Write checksum tools:
+	- cmd/mzsum (need to find an executable with a non-zero DOS checksum)
+	- cmd/pesum
