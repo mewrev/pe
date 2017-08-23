@@ -1,6 +1,7 @@
 package pe
 
 import (
+	"bytes"
 	"encoding/binary"
 	"fmt"
 	"io"
@@ -13,6 +14,34 @@ const sectHdrSize = 40
 
 // SectHeader represents a section header.
 type SectHeader struct {
+	// Section name.
+	Name string
+	// The total size of the section when loaded into memory. The raw section is
+	// zero-padded to fit.
+	VirtSize uint32
+	// Address of the section, relative to the image base.
+	RelAddr uint32
+	// The file size of the section.
+	Size uint32
+	// File offset of the section. This value is zero for sections that only
+	// contain uninitialized data.
+	Offset uint32
+	// File offset to the relocation entries of the section. This value is zero
+	// for sections that have no relocations.
+	RelocsOffset uint32
+	// File offset to the line-number entries of the section. This value is zero
+	// for sections that have no COFF line-numbers.
+	LineNumsOffset uint32
+	// Number of relocation entries for the section.
+	NReloc uint16
+	// Number of line-number entries for the section.
+	NLineNum uint16
+	// A bitfield which specifies the characteristics of the section.
+	Flags SectFlag
+}
+
+// sectHeader represents a section header.
+type sectHeader struct {
 	// Section name.
 	Name [8]byte
 	// The total size of the section when loaded into memory. The raw section is
@@ -247,10 +276,21 @@ func (file *File) parseSectHeaders() error {
 	// Parse section headers.
 	file.sectHdrs = make([]*SectHeader, fileHdr.NSection)
 	for i := range file.sectHdrs {
-		file.sectHdrs[i] = new(SectHeader)
-		err = binary.Read(sr, binary.LittleEndian, file.sectHdrs[i])
-		if err != nil {
+		var sectHdr sectHeader
+		if err := binary.Read(sr, binary.LittleEndian, &sectHdr); err != nil {
 			return fmt.Errorf("pe.File.parseSectHeaders: error reading section header; %v", err)
+		}
+		file.sectHdrs[i] = &SectHeader{
+			Name:           parseString(sectHdr.Name[:]),
+			VirtSize:       sectHdr.VirtSize,
+			RelAddr:        sectHdr.RelAddr,
+			Size:           sectHdr.Size,
+			Offset:         sectHdr.Offset,
+			RelocsOffset:   sectHdr.RelocsOffset,
+			LineNumsOffset: sectHdr.LineNumsOffset,
+			NReloc:         sectHdr.NReloc,
+			NLineNum:       sectHdr.NLineNum,
+			Flags:          sectHdr.Flags,
 		}
 	}
 
@@ -261,4 +301,14 @@ func (file *File) parseSectHeaders() error {
 func (file *File) Section(sectHdr *SectHeader) (data []byte, err error) {
 	sr := io.NewSectionReader(file.r, int64(sectHdr.Offset), int64(sectHdr.Size))
 	return ioutil.ReadAll(sr)
+}
+
+// ### [ Helper functions ] ####################################################
+
+// parseString returns a Go version of the NULL-terminated string.
+func parseString(b []byte) string {
+	if pos := bytes.IndexByte(b, '\x00'); pos != -1 {
+		return string(b[:pos])
+	}
+	return string(b)
 }
