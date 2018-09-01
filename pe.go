@@ -18,8 +18,10 @@ type File struct {
 	opthdr *OptHeader
 	// Section headers.
 	sectHdrs []*SectHeader
+	// Overlay.
+	overlay []byte
 	// Underlying reader.
-	r io.ReaderAt
+	r ReadAtSeeker
 	io.Closer
 }
 
@@ -40,8 +42,14 @@ func Open(path string) (file *File, err error) {
 	return file, nil
 }
 
+// ReadAtSeeker is the interface that wraps the basic ReadAt and Seek methods.
+type ReadAtSeeker interface {
+	io.ReaderAt
+	io.Seeker
+}
+
 // New returns a new File for accessing the PE binary of r.
-func New(r io.ReaderAt) (file *File, err error) {
+func New(r ReadAtSeeker) (file *File, err error) {
 	// TODO(u): Figure out which headers that should always be parsed.
 	//    * DOS header
 	//       - Contains no relevant information, but is required to locate the
