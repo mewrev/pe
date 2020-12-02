@@ -1,6 +1,7 @@
 // Package pe implements access to the Portable Executable (PE) file format.
 //
 // ref: http://msdn.microsoft.com/en-us/gg463119.aspx
+// ref: https://docs.microsoft.com/en-us/windows/desktop/debug/pe-format
 package pe
 
 import (

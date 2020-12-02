@@ -37,6 +37,26 @@ type OptHeader struct {
 	DataDirs []DataDirectory
 }
 
+// Data directory indices.
+const (
+	DataDirExportTable           = 0  // Export table.
+	DataDirImportTable           = 1  // Import table.
+	DataDirResourceTable         = 2  // Resource table.
+	DataDirExceptionTable        = 3  // Exception table.
+	DataDirCertificateTable      = 4  // Certificate table.
+	DataDirBaseRelocationTable   = 5  // Base relocation table.
+	DataDirDebug                 = 6  // Debugging information.
+	DataDirArchitecture          = 7  // Architecture-specific data.
+	DataDirGlobalPtr             = 8  // Global pointer register.
+	DataDirTLSTable              = 9  // Thread local storage (TLS) table.
+	DataDirLoadConfigTable       = 10 // Load configuration table.
+	DataDirBoundImport           = 11 // Bound import table.
+	DataDirIAT                   = 12 // Import address table.
+	DataDirDelayImportDescriptor = 13 // Delay import descriptor.
+	DataDirCLRHeader             = 14 // CLR header.
+	DataDirReserved              = 15 // Reserved.
+)
+
 // OptHeader32 represents a 32-bit optional header.
 type OptHeader32 struct {
 	// The state of the image file.
