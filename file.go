@@ -45,7 +45,7 @@ const (
 
 // archName is a map from Arch to string description.
 var archName = map[Arch]string{
-	ArchI386:  "i368",
+	ArchI386:  "I386",
 	ArchIA64:  "IA64",
 	ArchAMD64: "AMD64",
 }
